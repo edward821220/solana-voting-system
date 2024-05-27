@@ -4,13 +4,10 @@ import { HomeView } from "../views";
 
 const Home: NextPage = (props) => {
   return (
-    <div>
+    <div className="w-screen">
       <Head>
         <title>Solana Scaffold</title>
-        <meta
-          name="description"
-          content="Solana Scaffold"
-        />
+        <meta name="description" content="Solana Scaffold" />
       </Head>
       <HomeView />
     </div>

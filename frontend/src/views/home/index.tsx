@@ -1,13 +1,11 @@
 // Next, React
-import { FC, useEffect, useState } from "react";
-import Link from "next/link";
+import { FC, useEffect } from "react";
 
 // Wallet
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 
 // Components
 import { RequestAirdrop } from "../../components/RequestAirdrop";
-import pkg from "../../../package.json";
 
 // Store
 import useUserSOLBalanceStore from "../../stores/useUserSOLBalanceStore";
