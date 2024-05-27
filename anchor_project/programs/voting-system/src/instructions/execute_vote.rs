@@ -3,7 +3,6 @@ use anchor_lang::prelude::*;
 
 pub fn _execute_vote(ctx: Context<ExecuteVote>, index: usize) -> Result<()> {
     let vote = &mut ctx.accounts.vote;
-
     let user_vote = &mut ctx.accounts.user_vote;
     require!(!user_vote.has_voted, VoteError::AlreadyVoted);
 
