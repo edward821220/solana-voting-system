@@ -1,7 +1,7 @@
 use super::{UserVote, Vote, VoteError};
 use anchor_lang::prelude::*;
 
-pub fn _execute_vote(ctx: Context<ExecuteVote>, index: usize) -> Result<()> {
+pub fn _execute_vote(ctx: Context<ExecuteVote>, option_index: usize) -> Result<()> {
     let vote = &mut ctx.accounts.vote;
     let user_vote = &mut ctx.accounts.user_vote;
     require!(!user_vote.has_voted, VoteError::AlreadyVoted);
@@ -13,7 +13,7 @@ pub fn _execute_vote(ctx: Context<ExecuteVote>, index: usize) -> Result<()> {
     user_vote.user = ctx.accounts.user.key();
     user_vote.vote = vote.key();
 
-    vote.votes[index] += 1;
+    vote.votes[option_index] += 1;
     Ok(())
 }
 

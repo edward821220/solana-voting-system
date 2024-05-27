@@ -8,8 +8,8 @@ describe("voting-system", () => {
 
   const program = anchor.workspace.VotingSystem as Program<VotingSystem>;
 
-  const voteManagerSeed = anchor.utils.bytes.utf8.encode("vote_manager");
-  const voteSeed = anchor.utils.bytes.utf8.encode("vote");
+  const voteManagerSeed = Buffer.from("vote_manager");
+  const voteSeed = Buffer.from("vote");
 
   let voteManagePubkey: anchor.web3.PublicKey;
 
@@ -66,6 +66,34 @@ describe("voting-system", () => {
   });
 
   it("Execute a vote!", async () => {
-    // await program.methods.executeVote().rpc();
+    const voteSeeds = [
+      voteSeed,
+      Buffer.from(new anchor.BN(0).toArray("le", 8)),
+    ];
+    const [votePubkey] = anchor.web3.PublicKey.findProgramAddressSync(
+      voteSeeds,
+      program.programId
+    );
+
+    const voteAccountBefore = await program.account.vote.fetch(votePubkey);
+    assert.ok(voteAccountBefore.votes[1] === 0);
+
+    await program.methods
+      .executeVote(new anchor.BN(1))
+      .accounts({ vote: votePubkey })
+      .rpc();
+
+    const voteAccountAfter = await program.account.vote.fetch(votePubkey);
+
+    assert.ok(voteAccountAfter.votes[1] === 1);
+
+    try {
+      await program.methods
+        .executeVote(new anchor.BN(1))
+        .accounts({ vote: votePubkey })
+        .rpc();
+    } catch (err) {
+      assert.equal(err.error.errorCode.code, "AlreadyVoted");
+    }
   });
 });
