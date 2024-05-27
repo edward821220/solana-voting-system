@@ -1,12 +1,18 @@
 use super::Vote;
 use anchor_lang::prelude::*;
 
-pub fn _create_vote(ctx: Context<CreateVote>, topic: String, options: Vec<String>) -> Result<()> {
+pub fn _create_vote(
+    ctx: Context<CreateVote>,
+    topic: String,
+    options: Vec<String>,
+    end_time: i64,
+) -> Result<()> {
     let vote = &mut ctx.accounts.vote;
     let len = options.len();
     vote.topic = topic;
     vote.options = options;
     vote.votes = vec![0; len];
+    vote.end_time = end_time;
     Ok(())
 }
 

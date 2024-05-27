@@ -4,4 +4,6 @@ use anchor_lang::prelude::*;
 pub enum VoteError {
     #[msg("Already voted!")]
     AlreadyVoted,
+    #[msg("Vote ended!")]
+    VoteEnded,
 }

@@ -9,4 +9,5 @@ pub struct Vote {
     pub options: Vec<String>,
     #[max_len(20)]
     pub votes: Vec<u32>,
+    pub end_time: i64,
 }
