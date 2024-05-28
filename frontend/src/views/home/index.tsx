@@ -21,6 +21,10 @@ const programID = new PublicKey(idl.address);
 const VOTE_MANAGER_ACCOUNT_DATA_SIZE = 8 + 8;
 const VOTE_ACCOUNT_DATA_SIZE = 8 + 892;
 
+const confirmOptions: web3.ConfirmOptions = {
+  commitment: "confirmed",
+};
+
 export const HomeView: FC = ({}) => {
   const wallet = useWallet();
   const { connection } = useConnection();
@@ -61,7 +65,8 @@ export const HomeView: FC = ({}) => {
       await program.methods
         .executeVote(new BN(index))
         .accounts({ vote: voteAccountPubkey })
-        .rpc();
+        .rpc(confirmOptions);
+      await getVotes();
       setSelectedVote(null);
       setShowModal(false);
     } catch (err) {
@@ -93,10 +98,10 @@ export const HomeView: FC = ({}) => {
         .accounts({
           voteManager: voteManagerAccount[0].pubkey,
         })
-        .rpc();
+        .rpc(confirmOptions);
+      await getVotes();
       setShowCreateVoteModal(false);
       setNewVote({ topic: "", options: [""], period: 0 });
-      getVotes();
     } catch (err) {
       console.log(err);
       notify({
