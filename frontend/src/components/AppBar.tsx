@@ -1,8 +1,6 @@
-import Link from "next/link";
 import dynamic from "next/dynamic";
-import React, { useState } from "react";
+import React from "react";
 import { useAutoConnect } from "../contexts/AutoConnectProvider";
-import NetworkSwitcher from "./NetworkSwitcher";
 
 const WalletMultiButtonDynamic = dynamic(
   async () =>
@@ -70,7 +68,6 @@ export const AppBar: React.FC = () => {
                       className="toggle"
                     />
                   </label>
-                  <NetworkSwitcher />
                 </div>
               </li>
             </ul>
