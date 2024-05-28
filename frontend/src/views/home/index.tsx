@@ -62,13 +62,18 @@ export const HomeView: FC = ({}) => {
     const anchorProvider = getProvider();
     const program = new Program<VotingSystem>(idl_object, anchorProvider);
     try {
-      await program.methods
+      const signature = await program.methods
         .executeVote(new BN(index))
         .accounts({ vote: voteAccountPubkey })
         .rpc(confirmOptions);
       await getVotes();
       setSelectedVote(null);
       setShowModal(false);
+      notify({
+        type: "success",
+        message: "Vote successful!",
+        txid: signature,
+      });
     } catch (err) {
       console.log(err);
       notify({
@@ -89,7 +94,7 @@ export const HomeView: FC = ({}) => {
           filters: [{ dataSize: VOTE_MANAGER_ACCOUNT_DATA_SIZE }],
         }
       );
-      await program.methods
+      const signature = await program.methods
         .createVote(
           newVote.topic,
           newVote.options,
@@ -102,6 +107,11 @@ export const HomeView: FC = ({}) => {
       await getVotes();
       setShowCreateVoteModal(false);
       setNewVote({ topic: "", options: [""], period: 0 });
+      notify({
+        type: "success",
+        message: "Create vote successful!",
+        txid: signature,
+      });
     } catch (err) {
       console.log(err);
       notify({
