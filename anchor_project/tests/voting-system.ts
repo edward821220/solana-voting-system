@@ -37,7 +37,7 @@ describe("voting-system", () => {
       .createVote(
         "The GOAT of NBA",
         ["LBJ", "MJ", "Kobe"],
-        new anchor.BN(Date.now() + 1000 * 60 * 60 * 24 * 7)
+        new anchor.BN(Math.floor(Date.now() / 1000) + 60)
       )
       .accounts({
         voteManager: voteManagePubkey,
