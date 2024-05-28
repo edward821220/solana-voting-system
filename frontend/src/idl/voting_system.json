@@ -1,0 +1,303 @@
+{
+  "address": "FDgFxeYS7Bw1NCx38qwg6xnR8ELicuGKGHcT6aDwUDBX",
+  "metadata": {
+    "name": "voting_system",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "create_vote",
+      "discriminator": [
+        173,
+        115,
+        165,
+        78,
+        226,
+        132,
+        205,
+        254
+      ],
+      "accounts": [
+        {
+          "name": "vote_manager",
+          "writable": true
+        },
+        {
+          "name": "vote",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  111,
+                  116,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "vote_manager.total_votes",
+                "account": "VoteManager"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "topic",
+          "type": "string"
+        },
+        {
+          "name": "options",
+          "type": {
+            "vec": "string"
+          }
+        },
+        {
+          "name": "end_time",
+          "type": "i64"
+        }
+      ]
+    },
+    {
+      "name": "execute_vote",
+      "discriminator": [
+        64,
+        153,
+        132,
+        176,
+        32,
+        144,
+        189,
+        0
+      ],
+      "accounts": [
+        {
+          "name": "vote",
+          "writable": true
+        },
+        {
+          "name": "user_vote",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "user"
+              },
+              {
+                "kind": "account",
+                "path": "vote"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "index",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "init_vote_manager",
+      "discriminator": [
+        76,
+        252,
+        2,
+        9,
+        31,
+        102,
+        59,
+        2
+      ],
+      "accounts": [
+        {
+          "name": "vote_manager",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  118,
+                  111,
+                  116,
+                  101,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "UserVote",
+      "discriminator": [
+        136,
+        163,
+        243,
+        202,
+        202,
+        124,
+        112,
+        53
+      ]
+    },
+    {
+      "name": "Vote",
+      "discriminator": [
+        96,
+        91,
+        104,
+        57,
+        145,
+        35,
+        172,
+        155
+      ]
+    },
+    {
+      "name": "VoteManager",
+      "discriminator": [
+        40,
+        153,
+        184,
+        32,
+        45,
+        29,
+        255,
+        219
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "AlreadyVoted",
+      "msg": "Already voted!"
+    },
+    {
+      "code": 6001,
+      "name": "VoteEnded",
+      "msg": "Vote ended!"
+    }
+  ],
+  "types": [
+    {
+      "name": "UserVote",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "vote",
+            "type": "pubkey"
+          },
+          {
+            "name": "has_voted",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Vote",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "id",
+            "type": "u64"
+          },
+          {
+            "name": "topic",
+            "type": "string"
+          },
+          {
+            "name": "options",
+            "type": {
+              "vec": "string"
+            }
+          },
+          {
+            "name": "votes",
+            "type": {
+              "vec": "u32"
+            }
+          },
+          {
+            "name": "end_time",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "VoteManager",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "total_votes",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ],
+  "constants": [
+    {
+      "name": "SEED",
+      "type": "string",
+      "value": "\"anchor\""
+    }
+  ]
+}
